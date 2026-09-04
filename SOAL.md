@@ -76,6 +76,16 @@ server-nya salah konfigurasi - bisa memberikan kamu SELURUH isi zone
 sekaligus dalam satu permintaan, bukan ditanya satu-satu. Salah satu
 baris di dalamnya bukan record biasa.
 
+<details>
+<summary>💡 Hint (buka kalau stuck)</summary>
+
+Teknik ini namanya **zone transfer**, disingkat **AXFR** - salah satu
+query type di protokol DNS. Tool `dig` punya cara khusus untuk memintanya
+(bukan query A/TXT biasa). Kalau server DNS-nya dikonfigurasi benar,
+permintaan ini seharusnya ditolak.
+
+</details>
+
 `FLAG-DNS-AXFR: NUSA{____________________}`
 
 ### Flag 6
@@ -84,6 +94,19 @@ cuma nama terdaftar tanpa isi. Tapi ada satu yang jelas merupakan
 environment staging: tempat rilis berikutnya diuji coba sebelum naik ke
 production. Petakan namanya supaya browser/tools kamu tahu ke mana harus
 menuju, lalu kunjungi langsung.
+
+<details>
+<summary>💡 Hint (buka kalau stuck)</summary>
+
+Nama subdomain itu bukan alamat IP - komputer/browser-mu tidak otomatis
+tahu itu harus diarahkan ke server lab ini. Ada file lokal di
+sistem operasi (biasanya butuh akses admin/root untuk mengedit) yang
+memetakan nama host ke IP secara manual, sebelum DNS beneran ditanya.
+Alternatif tanpa ubah file itu: beberapa HTTP client bisa diberi tahu
+"anggap saja domainnya ini" lewat sebuah header request, walau kamu
+connect pakai IP.
+
+</details>
 
 `FLAG-DNS-CHAIN: NUSA{____________________}`
 
@@ -98,6 +121,18 @@ biasanya juga lupa bahwa mode itu suka membocorkan info ekstra - tapi
 kali ini bukan di body halaman yang kamu lihat di browser, melainkan di
 bagian respons yang jarang diperiksa orang kalau cuma buka halamannya
 biasa.
+
+<details>
+<summary>💡 Hint (buka kalau stuck)</summary>
+
+Setiap response HTTP punya dua bagian: header dan body. Yang tampil di
+layar browser cuma body. Untuk lihat header saja (tanpa body), curl
+punya opsi khusus (huruf besar, satu huruf) - atau di browser, buka
+DevTools -> tab Network -> klik request-nya -> lihat bagian Headers.
+Ingat juga: environment ini cuma bisa diakses dengan cara yang sama
+seperti waktu kamu buka Flag 6.
+
+</details>
 
 `FLAG-TECH-HEADER: NUSA{____________________}`
 
