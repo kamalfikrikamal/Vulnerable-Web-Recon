@@ -140,7 +140,8 @@ docker-compose.yml
 web/            # nginx: situs utama, vhost, panel internal, sertifikat TLS
 ftp/            # vsftpd anonymous
 dns/            # BIND9 zone corplab.local
-SOAL.md               # daftar tugas konkret per fase - mulai dari sini
+SOAL.md               # 7 flag CTF per fase - mulai dari sini
 LAPORAN_TEMPLATE.md   # template laporan untuk peserta
-instructor/ANSWER_KEY.md   # kunci jawaban lengkap (untuk instruktur)
+instructor/ANSWER_KEY.md   # konteks & temuan lengkap (untuk instruktur)
+instructor/JAWABAN.md      # walkthrough command per flag (untuk instruktur)
 ```
