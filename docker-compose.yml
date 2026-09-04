@@ -1,0 +1,68 @@
+services:
+  web:
+    build: ./web
+    container_name: reconlab-web
+    ports:
+      - "80:80"       # situs utama corplab.local + virtual host lainnya (Host header)
+      - "443:443"     # HTTPS self-signed, sertifikat memuat banyak SAN (subdomain)
+      - "8090:8080"   # panel internal "tidak sengaja" ke-expose - target nmap (host 8080 dipakai proses lain di mesin ini)
+    restart: unless-stopped
+    networks: [reconlab]
+
+  ftp:
+    build: ./ftp
+    container_name: reconlab-ftp
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    restart: unless-stopped
+    networks: [reconlab]
+
+  redis:
+    image: redis:7-alpine
+    container_name: reconlab-redis
+    command: ["redis-server", "--protected-mode", "no", "--save", ""]
+    ports:
+      - "6380:6379"   # host 6379 sudah dipakai container lain di mesin ini; ubah balik ke 6379 kalau kosong
+    restart: unless-stopped
+    networks: [reconlab]
+
+  db:
+    image: mariadb:10.6
+    container_name: reconlab-db
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    networks: [reconlab]
+
+  ssh:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: reconlab-ssh
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+      - PASSWORD_ACCESS=false
+      - USER_NAME=nusacms-ops
+    ports:
+      - "2200:2222"   # host 22 sering dipakai macOS Remote Login; ubah balik ke 22 kalau kosong
+    restart: unless-stopped
+    networks: [reconlab]
+
+  dns:
+    image: internetsystemsconsortium/bind9:9.18
+    container_name: reconlab-dns
+    volumes:
+      - ./dns/named.conf:/etc/bind/named.conf
+      - ./dns/zones:/etc/bind/zones
+    ports:
+      - "5300:53/tcp"   # host 53 sering dipakai (mDNSResponder/VPN/Internet Sharing); ubah balik ke 53 kalau kosong
+      - "5300:53/udp"
+    restart: unless-stopped
+    networks: [reconlab]
+
+networks:
+  reconlab:
+    driver: bridge
