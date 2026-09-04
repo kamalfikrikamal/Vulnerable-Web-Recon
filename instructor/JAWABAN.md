@@ -76,7 +76,7 @@ curl -s http://<target>:8090/ | grep -i FLAG
    git log --all --oneline
    ```
 
-   Hasilnya 4 commit, salah satunya menghapus sebuah file:
+   Hasilnya 4 commit, dua di antaranya pesannya mencurigakan:
 
    ```
    <hash4>  Release v2.3.1 - patch form kontak, tambah health check endpoint
@@ -85,7 +85,26 @@ curl -s http://<target>:8090/ | grep -i FLAG
    <hash1>  Initial release NusaCMS v2.0.0
    ```
 
-3. Lihat isi file itu SEBELUM dihapus (di commit `<hash2>`, parent dari
+3. Belum tahu file apa yang dimaksud? Jangan tebak - lihat file APA yang
+   berubah di commit-commit mencurigakan itu (`--stat` menampilkan nama
+   file tanpa perlu tahu duluan):
+
+   ```bash
+   git show --stat <hash2>
+   # WIP: migrasi FTP internal, simpan kredensial sementara ...
+   #  config/db_credentials.txt.bak | 9 +++++++++
+   #  1 file changed, 9 insertions(+)
+
+   git show --stat <hash3>
+   # Hapus file kredensial yang ke-commit tidak sengaja
+   #  config/db_credentials.txt.bak | 9 ---------
+   #  1 file changed, 9 deletions(-)
+   ```
+
+   Sekarang jelas: `config/db_credentials.txt.bak` ditambahkan di
+   `<hash2>` lalu dihapus lagi di `<hash3>`.
+
+4. Lihat isi file itu SEBELUM dihapus (di commit `<hash2>`, parent dari
    commit yang menghapusnya):
 
    ```bash

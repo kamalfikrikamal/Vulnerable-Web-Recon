@@ -69,7 +69,8 @@ SEMUA versi sebelumnya - termasuk sesuatu yang pernah ada, lalu buru-buru
 apakah itu benar-benar hilang?
 
 **Hint:** fuzzing ke `/.git/`, dump dengan tool semacam git-dumper,
-lalu `git log --all` + `git show <hash>:<path>`.
+lalu `git log --all`. Nama file yang berubah juga bisa dilihat langsung
+dari git (`--stat`) - tidak perlu ditebak.
 
 `FLAG-ACTIVE-GIT: NUSA{____________________}`
 

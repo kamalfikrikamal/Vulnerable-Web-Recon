@@ -81,7 +81,10 @@ Yang seharusnya ditemukan:
 protocol via `git clone` langsung biasanya gagal di git versi baru, jadi
 tool khusus seperti git-dumper diperlukan).
 
-Riwayat commit (`git log --all` setelah repo di-dump):
+Riwayat commit (`git log --all` setelah repo di-dump). Nama file yang
+berubah di tiap commit (termasuk `config/db_credentials.txt.bak`)
+didapat dari `git show --stat <hash>`, bukan ditebak - lihat
+`instructor/JAWABAN.md` untuk command persisnya:
 
 1. `Initial release NusaCMS v2.0.0`
 2. `WIP: migrasi FTP internal, simpan kredensial sementara (lupa masukin .gitignore)`
