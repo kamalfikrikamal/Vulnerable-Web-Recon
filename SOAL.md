@@ -76,12 +76,7 @@ server-nya salah konfigurasi - bisa memberikan kamu SELURUH isi zone
 sekaligus dalam satu permintaan, bukan ditanya satu-satu. Salah satu
 baris di dalamnya bukan record biasa.
 
-<details>
-<summary>💡 Hint (buka kalau stuck)</summary>
-
-Zone transfer / AXFR - query type khusus di `dig`.
-
-</details>
+**Hint:** zone transfer / AXFR - query type khusus di `dig`.
 
 `FLAG-DNS-AXFR: NUSA{____________________}`
 
@@ -92,12 +87,7 @@ environment staging: tempat rilis berikutnya diuji coba sebelum naik ke
 production. Petakan namanya supaya browser/tools kamu tahu ke mana harus
 menuju, lalu kunjungi langsung.
 
-<details>
-<summary>💡 Hint (buka kalau stuck)</summary>
-
-Hosts file lokal, atau set Host header manual di request-mu.
-
-</details>
+**Hint:** hosts file lokal, atau set Host header manual di request-mu.
 
 `FLAG-DNS-CHAIN: NUSA{____________________}`
 
@@ -113,12 +103,7 @@ kali ini bukan di body halaman yang kamu lihat di browser, melainkan di
 bagian respons yang jarang diperiksa orang kalau cuma buka halamannya
 biasa.
 
-<details>
-<summary>💡 Hint (buka kalau stuck)</summary>
-
-`curl -I`, atau DevTools tab Network > Headers.
-
-</details>
+**Hint:** `curl -I`, atau DevTools tab Network > Headers.
 
 `FLAG-TECH-HEADER: NUSA{____________________}`
 
