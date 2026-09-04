@@ -158,28 +158,15 @@ curl -s http://<target>/api/v1/status
 
 ---
 
-## Flag 9 - Technology Footprint (response header di subdomain)
+## Flag 9 - Technology Footprint (response header)
 
-1. Cek SAN di sertifikat TLS situs utama untuk daftar subdomain:
+```bash
+curl -sI http://<target>/
+```
 
-   ```bash
-   echo | openssl s_client -connect <target>:443 -servername corplab.local 2>/dev/null | \
-     openssl x509 -noout -text | grep -A2 "Subject Alternative Name"
-   ```
+Cari baris `X-Flag:` di response header (bukan body halamannya).
 
-2. Pilih subdomain yang namanya terasa seperti environment development,
-   petakan ke `/etc/hosts` (atau langsung set Host header):
-
-   ```bash
-   echo "<target-ip> dev.corplab.local" | sudo tee -a /etc/hosts
-   curl -sI http://dev.corplab.local/
-   # atau tanpa ubah /etc/hosts:
-   curl -sI -H "Host: dev.corplab.local" http://<target>/
-   ```
-
-3. Cari baris `X-Flag:` di response header (bukan body halamannya).
-
-**Flag:** `NUSA{h34d3r_b0c0rk4n_l1ngkung4n}`
+**Flag:** `NUSA{h34d3r_ngga_cuma_1s1_body}`
 
 ---
 
@@ -209,7 +196,7 @@ curl -s http://<target>/assets/js/jquery-1.12.4.min.js
 | 6  | `NUSA{fuzz1ng_k3temu_p4th_ters3mbuny1}` |
 | 7  | `NUSA{z1p_backup_juga_b0c0r_1nf0}` |
 | 8  | `NUSA{4p1_endp01nt_j4r4ng_d1t3bak}` |
-| 9  | `NUSA{h34d3r_b0c0rk4n_l1ngkung4n}` |
+| 9  | `NUSA{h34d3r_ngga_cuma_1s1_body}` |
 | 10 | `NUSA{l1brary_l4m4_masih_d1b4ca}` |
 
 Untuk temuan non-flag (port tambahan, tech stack, OSINT staf, dsb) dan

@@ -100,17 +100,13 @@ respons JSON-nya baik-baik - bukan cuma field `status`.
 ## Fase 3 - Technology Footprint
 
 ### Flag 9
-Sertifikat TLS situs utama mencantumkan beberapa nama host lain yang
-tidak pernah ditautkan dari mana pun di situs - salah satunya adalah
-environment development yang masih berjalan dengan "mode debug"
-menyala. Developer yang lupa mematikan mode debug biasanya juga lupa
-bahwa mode itu suka membocorkan info ekstra - tapi kali ini bukan di
-body halaman yang kamu lihat di browser, melainkan di bagian respons
-yang jarang diperiksa orang kalau cuma buka halamannya biasa.
+Server tidak cuma mengirim HTML yang kamu lihat di browser - ada bagian
+respons lain yang jarang diperiksa orang kalau cuma buka halamannya
+biasa. Coba lihat apa saja yang sebenarnya dikirim server bersamaan
+dengan halaman utama.
 
-**Hint:** cek Subject Alternative Name di sertifikat TLS
-(`openssl s_client` + `openssl x509`) untuk daftar nama hostnya, lalu
-`curl -I` (atau DevTools tab Network > Headers) ke salah satunya.
+**Hint:** `curl -I` (atau DevTools tab Network > Headers) ke halaman
+utama.
 
 `FLAG-TECH-HEADER: NUSA{____________________}`
 

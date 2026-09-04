@@ -15,7 +15,7 @@ kegembiraan "menemukan sendiri" untuk mereka.
 | 6 | `NUSA{fuzz1ng_k3temu_p4th_ters3mbuny1}` | HTML comment di `/admin-x92/` | directory/file fuzzing (dirsearch/gobuster/ffuf) |
 | 7 | `NUSA{z1p_backup_juga_b0c0r_1nf0}` | Isi file di dalam `/backup/nusantara-backup-2024.zip` | temukan lewat fuzzing/autoindex, unduh, ekstrak, baca isinya |
 | 8 | `NUSA{4p1_endp01nt_j4r4ng_d1t3bak}` | Field `debug_flag` di JSON `/api/v1/status` | baca petunjuk endpoint di `/changelog.txt`, lalu akses endpoint-nya |
-| 9 | `NUSA{h34d3r_b0c0rk4n_l1ngkung4n}` | Header `X-Flag` di `dev.corplab.local` | temukan subdomain via SAN sertifikat TLS -> `/etc/hosts`/Host header -> inspeksi response header |
+| 9 | `NUSA{h34d3r_ngga_cuma_1s1_body}` | Header `X-Flag` di situs utama (`corplab.local`) | inspeksi response header (`curl -I`), bukan cuma isi body halaman |
 | 10 | `NUSA{l1brary_l4m4_masih_d1b4ca}` | Comment di `assets/js/jquery-1.12.4.min.js` | Wappalyzer deteksi versi -> buka isi file library-nya langsung |
 
 Kalau nanti flag/isi konten diubah lagi, ingat: mengubah file apa pun di
@@ -106,12 +106,12 @@ manapun di lab (disengaja - fokus lab adalah *menemukan*, bukan
 
 `ftp://<ip>/` -> `readme.txt` (catatan umum) dan
 `CHANGELOG_internal.txt.bak` (catatan internal ops, berisi Flag 5, dan
-menyebutkan daftar subdomain internal yang aktif - petunjuk tambahan
-untuk Flag 9). Ini bagus untuk didiskusikan: di dunia nyata, "internal
-notes" semacam ini kadang malah mempermudah pentester karena defender
-curhat soal utang teknis di tempat yang salah.
+menyebutkan daftar subdomain internal yang aktif). Ini bagus untuk
+didiskusikan: di dunia nyata, "internal notes" semacam ini kadang malah
+mempermudah pentester karena defender curhat soal utang teknis di
+tempat yang salah.
 
-### Subdomain via sertifikat TLS
+### Subdomain via sertifikat TLS (bonus, tidak wajib untuk flag mana pun)
 
 Zona `corplab.local` tidak punya DNS server khusus di lab ini - nama-nama
 subdomain (`admin`, `dev`, `staging`, `api`, `git`, `backup`, `mail`)
@@ -125,15 +125,18 @@ echo | openssl s_client -connect <ip>:443 -servername corplab.local 2>/dev/null 
 
 Setelah dipetakan ke `/etc/hosts` (atau set Host header manual), tiap
 vhost punya isi berbeda (lihat bagian Technology Footprint) - terutama
-`dev.corplab.local` yang menjalankan "mode debug" dan berisi Flag 9 di
-response header-nya.
+`dev.corplab.local` yang menjalankan "mode debug" dengan versi lebih
+baru. Ini bagian dari Ronde Bonus di SOAL.md (perbandingan header antar
+environment), bukan flag wajib.
 
 ## 3. Technology Footprint
 
 - Server: `nginx/1.25.x` (version disclosure aktif, `server_tokens on`)
-- Header custom: `X-Powered-By: NusaCMS/2.3.1` (production),
-  `NusaCMS/2.4.0-dev` + `X-Debug-Mode: true` + `X-Flag` (dev.corplab.local,
-  Flag 9), `NusaCMS/2.4.0-beta` (staging.corplab.local)
+- Header `X-Flag` di situs utama berisi Flag 9 - murni dari inspeksi
+  response header, tidak perlu subdomain apa pun.
+- Header custom lain: `X-Powered-By: NusaCMS/2.3.1` (production),
+  `NusaCMS/2.4.0-dev` + `X-Debug-Mode: true` (dev.corplab.local),
+  `NusaCMS/2.4.0-beta` (staging.corplab.local) - bagian Ronde Bonus
 - Cookie custom: `NUSACMS_SESSION`
 - Library JS/CSS yang harus terdeteksi Wappalyzer: jQuery 1.12.4 (lama -
   layak dicatat sebagai "outdated", isi filenya berisi Flag 10),
