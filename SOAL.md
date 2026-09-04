@@ -30,6 +30,8 @@ production. Tanpa menyentuh apa pun secara aktif ke server, coba lihat
 apa yang sebenarnya dikirim browser-mu setiap kali membuka halaman utama
 - ada bagian yang tidak pernah tampil di layar.
 
+**Hint:** `curl` atau View Page Source ke halaman utama, cari komentar HTML.
+
 `FLAG-PASSIVE-1: NUSA{____________________}`
 
 ### Flag 2
@@ -37,6 +39,8 @@ Ada satu file "standar" yang biasa dipasang situs untuk memberi tahu
 peneliti keamanan ke mana harus melapor kalau menemukan masalah. File
 ini punya lokasi baku yang sama di hampir semua situs, dan formatnya
 memperbolehkan baris komentar bebas.
+
+**Hint:** `/.well-known/security.txt`.
 
 `FLAG-PASSIVE-2: NUSA{____________________}`
 
@@ -51,6 +55,8 @@ ke-expose ke publik". Layanan ini tidak muncul di navigasi situs mana
 pun - satu-satunya cara menemukannya adalah memeriksa semua pintu masuk
 yang benar-benar dimiliki server ini, bukan cuma yang "kelihatan".
 
+**Hint:** `nmap -p-` (scan semua 65535 port, jangan cuma default).
+
 `FLAG-ACTIVE-NMAP: NUSA{____________________}`
 
 ### Flag 4 (paling berbobot - butuh dua langkah berurutan)
@@ -62,6 +68,9 @@ SEMUA versi sebelumnya - termasuk sesuatu yang pernah ada, lalu buru-buru
 "dihapus" oleh developernya. Pertanyaannya: dihapus dari mana, dan
 apakah itu benar-benar hilang?
 
+**Hint:** fuzzing ke `/.git/`, dump dengan tool semacam git-dumper,
+lalu `git log --all` + `git show <hash>:<path>`.
+
 `FLAG-ACTIVE-GIT: NUSA{____________________}`
 
 ### Flag 5
@@ -69,6 +78,8 @@ Selain situs web, perusahaan ini rupanya masih menjalankan satu jalur
 transfer file lama peninggalan sebelum migrasi ke cloud storage - katanya
 sih "cuma dipakai buat share dokumen ringan ke rekanan". Coba cek apakah
 jalur itu bisa diakses tanpa kredensial apa pun.
+
+**Hint:** `ftp` atau `curl ftp://` dengan user `anonymous`.
 
 `FLAG-ACTIVE-FTP: NUSA{____________________}`
 
@@ -78,12 +89,16 @@ yang terasa seperti "pintu belakang" - namanya sengaja tidak lazim biar
 tidak gampang ditebak manusia, tapi kalau kamu coba banyak kemungkinan
 nama sekaligus (bukan satu-satu manual), cepat atau lambat bakal kena.
 
+**Hint:** dirsearch/gobuster/ffuf dengan wordlist umum ke situs utama.
+
 `FLAG-ACTIVE-FUZZ: NUSA{____________________}`
 
 ### Flag 7
 Situs ini juga punya arsip cadangan yang bisa diunduh siapa saja kalau
 tahu nama filenya. Setelah diunduh, buka isinya - bukan cuma nama
 filenya yang perlu diperhatikan, tapi juga apa yang tertulis di dalam.
+
+**Hint:** unduh file zip yang ditemukan, `unzip`, baca isi filenya.
 
 `FLAG-ACTIVE-ZIP: NUSA{____________________}`
 
@@ -92,6 +107,9 @@ Ada satu file di situs (`changelog.txt`) yang menyebut sebuah endpoint
 API dipakai untuk "health check monitoring" dan seharusnya "jangan
 expose publik". Coba akses endpoint itu langsung dan perhatikan
 respons JSON-nya baik-baik - bukan cuma field `status`.
+
+**Hint:** baca `/changelog.txt` untuk nama endpoint-nya, lalu akses
+langsung.
 
 `FLAG-ACTIVE-API: NUSA{____________________}`
 
@@ -115,6 +133,9 @@ Wappalyzer (atau tool sejenis) akan bilang situs ini pakai sebuah
 library JavaScript versi lama. Tools itu cuma mendeteksi DARI MANA
 library-nya berasal - dia tidak menyuruhmu benar-benar membaca isi
 filenya. Coba buka file library itu sendiri.
+
+**Hint:** `curl` langsung ke file `.js` yang terdeteksi (lihat src-nya
+di HTML), baca isinya.
 
 `FLAG-TECH-JSLIB: NUSA{____________________}`
 
