@@ -86,10 +86,13 @@ jalur itu bisa diakses tanpa kredensial apa pun.
 ### Flag 6
 Bukan semua halaman situs ini ditautkan dari navigasi. Ada satu path
 yang terasa seperti "pintu belakang" - namanya sengaja tidak lazim biar
-tidak gampang ditebak manusia, tapi kalau kamu coba banyak kemungkinan
-nama sekaligus (bukan satu-satu manual), cepat atau lambat bakal kena.
+tidak gampang ditebak. Tapi situs ini juga punya satu file konfigurasi
+standar yang isinya ditujukan untuk crawler/bot, dan developer kadang
+lupa kalau file itu bisa dibaca siapa saja - termasuk daftar path yang
+justru ingin mereka sembunyikan.
 
-**Hint:** dirsearch/gobuster/ffuf dengan wordlist umum ke situs utama.
+**Hint:** cek `/robots.txt` - kadang jadi "daftar direktori" informal
+yang justru membocorkan path yang ingin disembunyikan.
 
 `FLAG-ACTIVE-FUZZ: NUSA{____________________}`
 

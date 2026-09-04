@@ -112,22 +112,27 @@ curl -s ftp://<target>/CHANGELOG_internal.txt.bak --user anonymous:anon
 
 ---
 
-## Flag 6 - Active Recon (directory fuzzing)
+## Flag 6 - Active Recon (robots.txt sebagai directory listing informal)
 
 ```bash
-dirsearch -u http://<target>/ -e html,txt,json,zip,bak
-# atau: gobuster dir -u http://<target>/ -w <wordlist>
-# atau: ffuf -u http://<target>/FUZZ -w <wordlist>
+curl -s http://<target>/robots.txt
 ```
 
-Akan muncul `/admin-x92/` (juga di-hint lewat `/robots.txt`). Buka dan
-lihat komentar di HTML-nya:
+Salah satu baris `Disallow` menyebut `/admin-x92/` - path yang sengaja
+dibuat tidak lazim (bukan kata umum) supaya tidak ketebak wordlist
+fuzzing standar (dirsearch/gobuster/ffuf dengan wordlist umum **tidak**
+akan menemukan path ini, karena bukan kata umum). `robots.txt` justru
+jadi jalur yang dimaksud di sini - developer sering lupa file itu
+publik dan malah mengonfirmasi keberadaan path yang ingin disembunyikan.
 
 ```bash
 curl -s http://<target>/admin-x92/ | grep -i FLAG
 ```
 
 **Flag:** `NUSA{fuzz1ng_k3temu_p4th_ters3mbuny1}`
+
+*(Directory fuzzing tetap berguna untuk path lain yang namanya memang
+kata umum, mis. `/backup/`, `/changelog.txt` - lihat Flag 7 & 8.)*
 
 ---
 

@@ -12,7 +12,7 @@ kegembiraan "menemukan sendiri" untuk mereka.
 | 3 | `NUSA{p0rt_t3rsembuny1_bukan_r4h4s1a}` | Halaman di port 8080/8090 (`panel-internal`) | port scan (nmap), tidak ada link ke sini dari mana pun |
 | 4 | `NUSA{h1st0ry_g1t_t1d4k_p3rn4h_lup4}` | Isi `config/db_credentials.txt.bak` di commit ke-2 (sudah dihapus di commit ke-3) | dump `.git` + `git show <hash>:config/db_credentials.txt.bak` |
 | 5 | `NUSA{4n0n_ftp_m4s1h_b0c0r}` | `CHANGELOG_internal.txt.bak` di FTP | FTP anonymous login |
-| 6 | `NUSA{fuzz1ng_k3temu_p4th_ters3mbuny1}` | HTML comment di `/admin-x92/` | directory/file fuzzing (dirsearch/gobuster/ffuf) |
+| 6 | `NUSA{fuzz1ng_k3temu_p4th_ters3mbuny1}` | HTML comment di `/admin-x92/` | baca `/robots.txt` (baris `Disallow`) -> akses path yang disebut. **Bukan** wordlist fuzzing murni - `admin-x92` bukan kata umum, tidak ada di wordlist manapun |
 | 7 | `NUSA{z1p_backup_juga_b0c0r_1nf0}` | Isi file di dalam `/backup/nusantara-backup-2024.zip` | temukan lewat fuzzing/autoindex, unduh, ekstrak, baca isinya |
 | 8 | `NUSA{4p1_endp01nt_j4r4ng_d1t3bak}` | Field `debug_flag` di JSON `/api/v1/status` | baca petunjuk endpoint di `/changelog.txt`, lalu akses endpoint-nya |
 | 9 | `NUSA{h34d3r_ngga_cuma_1s1_body}` | Header `X-Flag` di situs utama (`corplab.local`) | inspeksi response header (`curl -I`), bukan cuma isi body halaman |
@@ -59,10 +59,13 @@ itu). Mengubah `ftp/data/*` butuh rebuild image `ftp`.
 ### Directory/file fuzzing (dirsearch/gobuster/ffuf terhadap :80)
 
 Yang seharusnya ditemukan:
-- `/admin-x92/` - login panel dummy, berisi Flag 6 (juga di-hint lewat
-  robots.txt)
+- `/admin-x92/` - login panel dummy, berisi Flag 6. **Ditemukan lewat
+  `/robots.txt`, bukan wordlist fuzzing** - namanya string buatan yang
+  tidak ada di wordlist manapun (SecLists, dirb, raft-*, dll), jadi
+  blind fuzzing murni tidak akan berhasil menemukannya secara realistis
 - `/backup/nusantara-backup-2024.zip` - autoindex aktif di `/backup/`,
-  isi arsipnya berisi Flag 7
+  isi arsipnya berisi Flag 7 (nama file umum, wajar ditemukan lewat
+  fuzzing)
 - `/api/v1/status` - JSON health-check endpoint, berisi Flag 8 di field
   `debug_flag` (petunjuk endpoint-nya ada di `/changelog.txt`)
 - `/.git/` - **exposed git repository**, berisi Flag 4 (lihat detail
