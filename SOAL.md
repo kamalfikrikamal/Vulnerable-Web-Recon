@@ -24,9 +24,11 @@ yang signifikan.
 ## Fase 1 - Passive Recon
 
 ### Flag 1
-**Teknik:** baca isi halaman tanpa scanning/fuzzing apa pun - cukup
-`curl`/view-source situs utama.
-**Petunjuk:** ada komentar HTML yang biasanya luput dibaca orang.
+Developer situs ini kadang menaruh "catatan pribadi" ke sesama tim
+langsung di kode halaman, dan lupa membersihkannya sebelum rilis ke
+production. Tanpa menyentuh apa pun secara aktif ke server, coba lihat
+apa yang sebenarnya dikirim browser-mu setiap kali membuka halaman utama
+- ada bagian yang tidak pernah tampil di layar.
 
 `FLAG-PASSIVE: NUSA{____________________}`
 
@@ -35,25 +37,31 @@ yang signifikan.
 ## Fase 2 - Active Recon (nmap, dirsearch/fuzzing, protokol lain)
 
 ### Flag 2
-**Teknik:** port scan menyeluruh (`nmap -Pn -sV -p-`).
-**Petunjuk:** ada satu port yang tidak ditautkan dari situs utama
-maupun DNS. Cuma port scan yang bisa menemukannya.
+Tim ops sempat menyinggung ada satu layanan internal yang "seharusnya
+cuma bisa diakses lewat VPN kantor, tapi kelupaan waktu deploy sehingga
+ke-expose ke publik". Layanan ini tidak muncul di navigasi situs, tidak
+juga di catatan DNS mana pun - satu-satunya cara menemukannya adalah
+memeriksa semua pintu masuk yang benar-benar dimiliki server ini, bukan
+cuma yang "kelihatan".
 
 `FLAG-ACTIVE-NMAP: NUSA{____________________}`
 
-### Flag 3 (paling berbobot - 2 langkah)
-**Teknik:** temukan direktori `.git` yang ter-expose (fuzzing/dirsearch),
-lalu dump seluruh repository-nya (mis. `git-dumper`/`GitTools`/manual
-lewat `curl` per object) dan periksa history commit-nya. Flag ada di
-sebuah file yang **sudah dihapus** di commit terbaru, tapi masih ada di
-versi commit sebelumnya.
-**Petunjuk:** `git log --all`, cari commit yang menghapus sesuatu, lalu
-`git show <hash>:<path>`.
+### Flag 3 (paling berbobot - butuh dua langkah berurutan)
+Ada folder tersembunyi yang sering ketinggalan ter-deploy ke production
+kalau developer tidak hati-hati - isinya bukan konten situs, tapi
+"riwayat kerja" dari situs itu sendiri. Kalau folder itu benar-benar
+ke-expose, kamu tidak cuma bisa lihat kondisi situs sekarang, tapi juga
+SEMUA versi sebelumnya - termasuk sesuatu yang pernah ada, lalu buru-buru
+"dihapus" oleh developernya. Pertanyaannya: dihapus dari mana, dan
+apakah itu benar-benar hilang?
 
 `FLAG-ACTIVE-GIT: NUSA{____________________}`
 
 ### Flag 4
-**Teknik:** login FTP secara anonymous, baca file-file yang tersedia.
+Selain situs web, perusahaan ini rupanya masih menjalankan satu jalur
+transfer file lama peninggalan sebelum migrasi ke cloud storage - katanya
+sih "cuma dipakai buat share dokumen ringan ke rekanan". Coba cek apakah
+jalur itu bisa diakses tanpa kredensial apa pun.
 
 `FLAG-ACTIVE-FTP: NUSA{____________________}`
 
@@ -62,16 +70,20 @@ versi commit sebelumnya.
 ## Fase 3 - DNS Enumeration
 
 ### Flag 5
-**Teknik:** zone transfer (`dig axfr corplab.local @<dns-ip> -p <port>`).
-Ada record TXT yang cuma muncul lewat AXFR, tidak lewat query biasa.
+DNS server yang mengelola domain ini konon "belum sempat dirapikan
+konfigurasinya". Ada satu teknik enumerasi DNS klasik yang - kalau
+server-nya salah konfigurasi - bisa memberikan kamu SELURUH isi zone
+sekaligus dalam satu permintaan, bukan ditanya satu-satu. Salah satu
+baris di dalamnya bukan record biasa.
 
 `FLAG-DNS-AXFR: NUSA{____________________}`
 
 ### Flag 6
-**Teknik:** dari hasil enumerasi subdomain (zone transfer atau SAN
-sertifikat TLS), pasang salah satu subdomain internal ke `/etc/hosts`
-lalu akses lewat browser/curl. Flag ada di salah satu halaman subdomain
-yang tidak ditautkan dari mana pun.
+Tidak semua nama yang kamu temukan di fase DNS itu "hidup" - beberapa
+cuma nama terdaftar tanpa isi. Tapi ada satu yang jelas merupakan
+environment staging: tempat rilis berikutnya diuji coba sebelum naik ke
+production. Petakan namanya supaya browser/tools kamu tahu ke mana harus
+menuju, lalu kunjungi langsung.
 
 `FLAG-DNS-CHAIN: NUSA{____________________}`
 
@@ -80,10 +92,12 @@ yang tidak ditautkan dari mana pun.
 ## Fase 4 - Technology Footprint
 
 ### Flag 7
-**Teknik:** periksa response header (bukan isi halaman) di salah satu
-subdomain yang sudah kamu temukan di Fase 3. Wappalyzer tidak akan
-menunjukkan ini langsung - perlu cek header manual (`curl -I` atau tab
-Network di browser).
+Salah satu environment yang kamu temukan di Fase 3 sedang berjalan
+dengan "mode debug" menyala. Developer yang lupa mematikan mode debug
+biasanya juga lupa bahwa mode itu suka membocorkan info ekstra - tapi
+kali ini bukan di body halaman yang kamu lihat di browser, melainkan di
+bagian respons yang jarang diperiksa orang kalau cuma buka halamannya
+biasa.
 
 `FLAG-TECH-HEADER: NUSA{____________________}`
 
@@ -93,15 +107,15 @@ Network di browser).
 
 Tidak semua temuan berupa flag - beberapa cuma perlu diobservasi:
 
-- Sebutkan port berapa saja yang terbuka menurut hasil nmap-mu (di luar
-  yang sudah dipakai untuk Flag 2).
+- Sebutkan semua port terbuka yang kamu temukan (di luar yang sudah
+  dipakai untuk Flag 2).
 - Sebutkan versi library JS yang terdeteksi Wappalyzer di situs utama -
   apakah tergolong versi lama?
-- Bandingkan header `X-Powered-By` antara `corplab.local`,
-  `dev.corplab.local`, dan `staging.corplab.local`. Ada berapa versi
-  berbeda yang kamu temukan?
-- Dari 8 subdomain yang muncul di zone transfer, berapa yang benar-benar
-  punya halaman berbeda, dan berapa yang "dead end"?
+- Bandingkan header `X-Powered-By` di situs utama dengan subdomain-
+  subdomain lain yang kamu temukan di Fase 3. Ada berapa versi berbeda
+  yang kamu temukan, dan apa artinya?
+- Dari semua subdomain yang muncul di hasil enumerasi DNS, berapa yang
+  benar-benar punya halaman berbeda, dan berapa yang "dead end"?
 
 ---
 
