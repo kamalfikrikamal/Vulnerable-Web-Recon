@@ -1,0 +1,7 @@
+body { font-family: Arial, sans-serif; margin: 0; color: #222; }
+.navbar { display: flex; justify-content: space-between; padding: 1rem 2rem; background: #0b3d59; color: #fff; }
+.navbar a { color: #fff; margin-left: 1rem; text-decoration: none; }
+main { padding: 2rem; max-width: 800px; margin: 0 auto; }
+footer { text-align: center; padding: 1rem; color: #777; font-size: 0.85rem; }
+.team { list-style: none; padding: 0; }
+.team li { margin-bottom: 1rem; }

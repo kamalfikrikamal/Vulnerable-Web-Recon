@@ -1,0 +1,5 @@
+Contact: mailto:security@corplab.local
+Expires: 2026-12-31T23:59:00.000Z
+Preferred-Languages: id, en
+Canonical: https://corplab.local/.well-known/security.txt
+Comment: Ini adalah environment lab training. Endpoint ini tidak dipantau tim keamanan sungguhan.

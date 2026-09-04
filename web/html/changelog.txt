@@ -1,0 +1,11 @@
+## Changelog Internal - NusaCMS
+
+v2.3.1 (2024-03-01) - Patch minor bug pada form kontak
+v2.3.0 (2024-01-15) - Upgrade dependency jQuery ke 1.12.4 (belum sempat
+                       upgrade ke versi lebih baru karena kompatibilitas
+                       modul lama)
+v2.2.0 (2023-11-02) - Tambah endpoint /api/v1/status untuk health check
+                       monitoring
+v2.1.0 (2023-08-20) - Migrasi FTP internal, kredensial baru dikirim lewat
+                       email tim (jangan commit ke repo lagi ya!)
+v2.0.0 (2023-05-10) - Initial internal release

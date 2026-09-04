@@ -1,0 +1,11 @@
+/* TEAM */
+Lead Developer: Andi Saputra -- andi.saputra@corplab.local
+System Administrator: Rima Wulandari -- rima.wulandari@corplab.local
+Head of Operations: Budi Hartono -- budi.hartono@corplab.local
+Site design: Studio Kreatif Nusantara
+
+/* SITE */
+Last update: 2024/03/12
+Standards: HTML5, CSS3
+Components: NusaCMS 2.3.1, Bootstrap 3.3.7, jQuery 1.12.4
+Software: Nginx

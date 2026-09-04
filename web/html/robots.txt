@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin-x92/
+Disallow: /backup/
+Disallow: /panel-internal/
+Disallow: /api/internal/
+Disallow: /.git/
+Disallow: /config/
+
+Sitemap: /sitemap.xml

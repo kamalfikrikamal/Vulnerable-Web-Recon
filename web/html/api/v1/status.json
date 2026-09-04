@@ -1,0 +1,8 @@
+{
+  "status": "ok",
+  "app": "NusaCMS",
+  "version": "2.3.1",
+  "env": "production",
+  "uptime_seconds": 934211,
+  "internal_note": "Health-check endpoint - jangan expose publik (tiket OPS-1187)"
+}

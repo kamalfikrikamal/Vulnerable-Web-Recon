@@ -13,4 +13,10 @@ COPY conf.d/ /etc/nginx/conf.d/
 COPY html/ /usr/share/nginx/html/
 COPY vhosts/ /usr/share/nginx/vhosts/
 
+# Materi lab "exposed .git directory": disimpan sebagai tarball (bukan nested
+# git repo) supaya tidak jadi gitlink/submodule kosong saat repo utama di-clone.
+COPY git-demo.git.tar.gz /tmp/git-demo.git.tar.gz
+RUN tar -xzf /tmp/git-demo.git.tar.gz -C /usr/share/nginx/html/ && \
+    rm /tmp/git-demo.git.tar.gz
+
 EXPOSE 80 443 8080
