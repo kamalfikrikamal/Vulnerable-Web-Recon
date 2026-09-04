@@ -15,28 +15,43 @@ paling menarik untuk ditindaklanjuti._
 |---|---|
 | | |
 
-## 3. Passive Recon
+## 3. Rekap Flag (dari SOAL.md)
+
+| # | Flag | Fase | Ditemukan lewat |
+|---|------|------|------------------|
+| 1 | | Passive | |
+| 2 | | Passive | |
+| 3 | | Active (nmap) | |
+| 4 | | Active (git) | |
+| 5 | | Active (FTP) | |
+| 6 | | Active (fuzzing) | |
+| 7 | | Active (zip) | |
+| 8 | | Active (API) | |
+| 9 | | Tech footprint | |
+| 10 | | Tech footprint | |
+
+## 4. Passive Recon
 
 | # | Temuan | Sumber | Kenapa menarik |
 |---|---|---|---|
 | 1 | | | |
 
-## 4. Active Recon (Port Scanning & Fuzzing)
+## 5. Active Recon (Port Scanning & Fuzzing)
 
-### 4.1 Hasil Port Scan
+### 5.1 Hasil Port Scan
 
 | Port | Service | Versi | Catatan |
 |---|---|---|---|
 | | | | |
 
-### 4.2 Hasil Directory/File Fuzzing
+### 5.2 Hasil Directory/File Fuzzing
 
 | Path | Status | Catatan |
 |---|---|---|
 
-## 5. DNS Enumeration
+### 5.3 Subdomain (via sertifikat TLS)
 
-| Subdomain | Record | Aktif? (ada service yang merespons) | Catatan |
+| Subdomain | Ditemukan via | Aktif? (punya halaman berbeda) | Catatan |
 |---|---|---|---|
 
 ## 6. Technology Footprint

@@ -2,7 +2,7 @@
 
 Target: **PT Nusantara Data Kreasi** (`corplab.local`), lab lokal.
 
-Ada **7 flag** tersebar di 4 fase recon. Semua berformat:
+Ada **10 flag** tersebar di 3 fase recon. Semua berformat:
 
 ```
 NUSA{...}
@@ -30,23 +30,30 @@ production. Tanpa menyentuh apa pun secara aktif ke server, coba lihat
 apa yang sebenarnya dikirim browser-mu setiap kali membuka halaman utama
 - ada bagian yang tidak pernah tampil di layar.
 
-`FLAG-PASSIVE: NUSA{____________________}`
+`FLAG-PASSIVE-1: NUSA{____________________}`
+
+### Flag 2
+Ada satu file "standar" yang biasa dipasang situs untuk memberi tahu
+peneliti keamanan ke mana harus melapor kalau menemukan masalah. File
+ini punya lokasi baku yang sama di hampir semua situs, dan formatnya
+memperbolehkan baris komentar bebas.
+
+`FLAG-PASSIVE-2: NUSA{____________________}`
 
 ---
 
 ## Fase 2 - Active Recon (nmap, dirsearch/fuzzing, protokol lain)
 
-### Flag 2
+### Flag 3
 Tim ops sempat menyinggung ada satu layanan internal yang "seharusnya
 cuma bisa diakses lewat VPN kantor, tapi kelupaan waktu deploy sehingga
-ke-expose ke publik". Layanan ini tidak muncul di navigasi situs, tidak
-juga di catatan DNS mana pun - satu-satunya cara menemukannya adalah
-memeriksa semua pintu masuk yang benar-benar dimiliki server ini, bukan
-cuma yang "kelihatan".
+ke-expose ke publik". Layanan ini tidak muncul di navigasi situs mana
+pun - satu-satunya cara menemukannya adalah memeriksa semua pintu masuk
+yang benar-benar dimiliki server ini, bukan cuma yang "kelihatan".
 
 `FLAG-ACTIVE-NMAP: NUSA{____________________}`
 
-### Flag 3 (paling berbobot - butuh dua langkah berurutan)
+### Flag 4 (paling berbobot - butuh dua langkah berurutan)
 Ada folder tersembunyi yang sering ketinggalan ter-deploy ke production
 kalau developer tidak hati-hati - isinya bukan konten situs, tapi
 "riwayat kerja" dari situs itu sendiri. Kalau folder itu benar-benar
@@ -57,7 +64,7 @@ apakah itu benar-benar hilang?
 
 `FLAG-ACTIVE-GIT: NUSA{____________________}`
 
-### Flag 4
+### Flag 5
 Selain situs web, perusahaan ini rupanya masih menjalankan satu jalur
 transfer file lama peninggalan sebelum migrasi ke cloud storage - katanya
 sih "cuma dipakai buat share dokumen ringan ke rekanan". Coba cek apakah
@@ -65,47 +72,55 @@ jalur itu bisa diakses tanpa kredensial apa pun.
 
 `FLAG-ACTIVE-FTP: NUSA{____________________}`
 
----
-
-## Fase 3 - DNS Enumeration
-
-### Flag 5
-DNS server yang mengelola domain ini konon "belum sempat dirapikan
-konfigurasinya". Ada satu teknik enumerasi DNS klasik yang - kalau
-server-nya salah konfigurasi - bisa memberikan kamu SELURUH isi zone
-sekaligus dalam satu permintaan, bukan ditanya satu-satu. Salah satu
-baris di dalamnya bukan record biasa.
-
-**Hint:** zone transfer / AXFR - query type khusus di `dig`.
-
-`FLAG-DNS-AXFR: NUSA{____________________}`
-
 ### Flag 6
-Tidak semua nama yang kamu temukan di fase DNS itu "hidup" - beberapa
-cuma nama terdaftar tanpa isi. Tapi ada satu yang jelas merupakan
-environment staging: tempat rilis berikutnya diuji coba sebelum naik ke
-production. Petakan namanya supaya browser/tools kamu tahu ke mana harus
-menuju, lalu kunjungi langsung.
+Bukan semua halaman situs ini ditautkan dari navigasi. Ada satu path
+yang terasa seperti "pintu belakang" - namanya sengaja tidak lazim biar
+tidak gampang ditebak manusia, tapi kalau kamu coba banyak kemungkinan
+nama sekaligus (bukan satu-satu manual), cepat atau lambat bakal kena.
 
-**Hint:** hosts file lokal, atau set Host header manual di request-mu.
-
-`FLAG-DNS-CHAIN: NUSA{____________________}`
-
----
-
-## Fase 4 - Technology Footprint
+`FLAG-ACTIVE-FUZZ: NUSA{____________________}`
 
 ### Flag 7
-Salah satu environment yang kamu temukan di Fase 3 sedang berjalan
-dengan "mode debug" menyala. Developer yang lupa mematikan mode debug
-biasanya juga lupa bahwa mode itu suka membocorkan info ekstra - tapi
-kali ini bukan di body halaman yang kamu lihat di browser, melainkan di
-bagian respons yang jarang diperiksa orang kalau cuma buka halamannya
-biasa.
+Situs ini juga punya arsip cadangan yang bisa diunduh siapa saja kalau
+tahu nama filenya. Setelah diunduh, buka isinya - bukan cuma nama
+filenya yang perlu diperhatikan, tapi juga apa yang tertulis di dalam.
 
-**Hint:** `curl -I`, atau DevTools tab Network > Headers.
+`FLAG-ACTIVE-ZIP: NUSA{____________________}`
+
+### Flag 8
+Ada satu file di situs (`changelog.txt`) yang menyebut sebuah endpoint
+API dipakai untuk "health check monitoring" dan seharusnya "jangan
+expose publik". Coba akses endpoint itu langsung dan perhatikan
+respons JSON-nya baik-baik - bukan cuma field `status`.
+
+`FLAG-ACTIVE-API: NUSA{____________________}`
+
+---
+
+## Fase 3 - Technology Footprint
+
+### Flag 9
+Sertifikat TLS situs utama mencantumkan beberapa nama host lain yang
+tidak pernah ditautkan dari mana pun di situs - salah satunya adalah
+environment development yang masih berjalan dengan "mode debug"
+menyala. Developer yang lupa mematikan mode debug biasanya juga lupa
+bahwa mode itu suka membocorkan info ekstra - tapi kali ini bukan di
+body halaman yang kamu lihat di browser, melainkan di bagian respons
+yang jarang diperiksa orang kalau cuma buka halamannya biasa.
+
+**Hint:** cek Subject Alternative Name di sertifikat TLS
+(`openssl s_client` + `openssl x509`) untuk daftar nama hostnya, lalu
+`curl -I` (atau DevTools tab Network > Headers) ke salah satunya.
 
 `FLAG-TECH-HEADER: NUSA{____________________}`
+
+### Flag 10
+Wappalyzer (atau tool sejenis) akan bilang situs ini pakai sebuah
+library JavaScript versi lama. Tools itu cuma mendeteksi DARI MANA
+library-nya berasal - dia tidak menyuruhmu benar-benar membaca isi
+filenya. Coba buka file library itu sendiri.
+
+`FLAG-TECH-JSLIB: NUSA{____________________}`
 
 ---
 
@@ -114,28 +129,31 @@ biasa.
 Tidak semua temuan berupa flag - beberapa cuma perlu diobservasi:
 
 - Sebutkan semua port terbuka yang kamu temukan (di luar yang sudah
-  dipakai untuk Flag 2).
-- Sebutkan versi library JS yang terdeteksi Wappalyzer di situs utama -
-  apakah tergolong versi lama?
+  dipakai untuk Flag 3).
+- Sebutkan versi library JS/CSS lain (selain Flag 10) yang terdeteksi
+  Wappalyzer di situs utama.
 - Bandingkan header `X-Powered-By` di situs utama dengan subdomain-
-  subdomain lain yang kamu temukan di Fase 3. Ada berapa versi berbeda
-  yang kamu temukan, dan apa artinya?
-- Dari semua subdomain yang muncul di hasil enumerasi DNS, berapa yang
-  benar-benar punya halaman berbeda, dan berapa yang "dead end"?
+  subdomain lain yang kamu temukan lewat sertifikat TLS. Ada berapa
+  versi berbeda yang kamu temukan, dan apa artinya?
+- Dari nama-nama staf yang kamu kumpulkan di fase passive recon, mana
+  yang menurutmu paling berguna untuk skenario social engineering?
 
 ---
 
 ## Rekap Jawaban
 
-| # | Flag | Fase | Ditemukan lewat |
-|---|------|------|------------------|
-| 1 | | Passive | |
-| 2 | | Active (nmap) | |
-| 3 | | Active (git) | |
-| 4 | | Active (FTP) | |
-| 5 | | DNS (AXFR) | |
-| 6 | | DNS (chain) | |
-| 7 | | Tech footprint | |
+| #  | Flag | Fase             | Ditemukan lewat |
+|----|------|------------------|------------------|
+| 1  |      | Passive          |                  |
+| 2  |      | Passive          |                  |
+| 3  |      | Active (nmap)    |                  |
+| 4  |      | Active (git)     |                  |
+| 5  |      | Active (FTP)     |                  |
+| 6  |      | Active (fuzzing) |                  |
+| 7  |      | Active (zip)     |                  |
+| 8  |      | Active (API)     |                  |
+| 9  |      | Tech footprint   |                  |
+| 10 |      | Tech footprint   |                  |
 
 Pindahkan tabel ini ke `LAPORAN_TEMPLATE.md` sebagai bukti pengerjaan,
 lengkap dengan command yang dipakai untuk tiap flag.

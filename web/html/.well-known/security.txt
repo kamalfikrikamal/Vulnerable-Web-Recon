@@ -3,3 +3,4 @@ Expires: 2026-12-31T23:59:00.000Z
 Preferred-Languages: id, en
 Canonical: https://corplab.local/.well-known/security.txt
 Comment: Ini adalah environment lab training. Endpoint ini tidak dipantau tim keamanan sungguhan.
+Comment: FLAG-PASSIVE-2: NUSA{s3curity_txt_j4r4ng_d1b4ca}

@@ -3,12 +3,10 @@ Catatan internal - jangan sebar ke luar tim.
 - Sudah pindah dari vsftpd 3.0.3 lama (rawan CVE-2011-2523) ke versi image
   Alpine terbaru, tapi auth masih anonymous read-only untuk kebutuhan share
   publik terbatas.
-- SSH di server staging (ssh.corplab.local / port 22) masih pakai password
-  auth, belum full key-only. Ticket: OPS-1421.
-- Subdomain internal yang aktif: admin, dev, staging, api, git, backup, mail.
-  vpn.corplab.local dan monitor.corplab.local baru didaftarkan di DNS,
-  service-nya belum di-deploy (jangan bingung kalau connection refused).
-- Reminder: zone transfer DNS harus dibatasi ke IP kantor saja, saat ini
-  masih allow-transfer any (OPS-1187, belum dikerjakan).
+- SSH di server staging masih pakai password auth, belum full key-only.
+  Ticket: OPS-1421.
+- Subdomain internal yang aktif: admin, dev, staging, api, git, backup,
+  mail. Beberapa belum ditautkan dari situs utama, cuma kelihatan dari
+  sertifikat TLS.
 
 FLAG-ACTIVE-FTP: NUSA{4n0n_ftp_m4s1h_b0c0r}

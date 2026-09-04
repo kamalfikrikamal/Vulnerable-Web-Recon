@@ -51,18 +51,6 @@ services:
     restart: unless-stopped
     networks: [reconlab]
 
-  dns:
-    image: internetsystemsconsortium/bind9:9.18
-    container_name: reconlab-dns
-    volumes:
-      - ./dns/named.conf:/etc/bind/named.conf
-      - ./dns/zones:/etc/bind/zones
-    ports:
-      - "5300:53/tcp"   # host 53 sering dipakai (mDNSResponder/VPN/Internet Sharing); ubah balik ke 53 kalau kosong
-      - "5300:53/udp"
-    restart: unless-stopped
-    networks: [reconlab]
-
 networks:
   reconlab:
     driver: bridge
