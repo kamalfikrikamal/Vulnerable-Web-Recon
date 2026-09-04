@@ -4,10 +4,14 @@ Pendamping `SOAL.md`. File ini berisi **command persis + flag** untuk
 tiap nomor. Jangan bagikan ke peserta sebelum sesi selesai (boleh
 dibagikan sesudahnya sebagai bahan belajar "cara yang dimaksud").
 
-Port yang dipakai di bawah ini mengikuti default `docker-compose.yml`
-di repo ini (`80/443/8090/21/5300/6380/3306/2200`). Ganti `<target>`
-dengan IP/host tempat lab dijalankan, dan sesuaikan port kalau instruktur
-mengubah default-nya.
+Port yang dipakai di bawah ini (`80/443/8090/21/5300/6380/3306/2200`)
+BUKAN sesuatu yang harus ditebak - itu cuma default port host dari
+`docker-compose.yml` repo ini (beberapa digeser dari port standarnya,
+mis. DNS di 5300 bukan 53, karena bentrok port di mesin development).
+Di skenario nyata, peserta akan tahu port yang benar dari **hasil nmap
+mereka sendiri** (Flag 2), bukan dari dokumen ini. Ganti `<target>`
+dengan IP/host tempat lab dijalankan, dan sesuaikan tiap port di bawah
+kalau instruktur mengubah mapping default di `docker-compose.yml`.
 
 ---
 
