@@ -79,10 +79,7 @@ baris di dalamnya bukan record biasa.
 <details>
 <summary>💡 Hint (buka kalau stuck)</summary>
 
-Teknik ini namanya **zone transfer**, disingkat **AXFR** - salah satu
-query type di protokol DNS. Tool `dig` punya cara khusus untuk memintanya
-(bukan query A/TXT biasa). Kalau server DNS-nya dikonfigurasi benar,
-permintaan ini seharusnya ditolak.
+Zone transfer / AXFR - query type khusus di `dig`.
 
 </details>
 
@@ -98,13 +95,7 @@ menuju, lalu kunjungi langsung.
 <details>
 <summary>💡 Hint (buka kalau stuck)</summary>
 
-Nama subdomain itu bukan alamat IP - komputer/browser-mu tidak otomatis
-tahu itu harus diarahkan ke server lab ini. Ada file lokal di
-sistem operasi (biasanya butuh akses admin/root untuk mengedit) yang
-memetakan nama host ke IP secara manual, sebelum DNS beneran ditanya.
-Alternatif tanpa ubah file itu: beberapa HTTP client bisa diberi tahu
-"anggap saja domainnya ini" lewat sebuah header request, walau kamu
-connect pakai IP.
+Hosts file lokal, atau set Host header manual di request-mu.
 
 </details>
 
@@ -125,12 +116,7 @@ biasa.
 <details>
 <summary>💡 Hint (buka kalau stuck)</summary>
 
-Setiap response HTTP punya dua bagian: header dan body. Yang tampil di
-layar browser cuma body. Untuk lihat header saja (tanpa body), curl
-punya opsi khusus (huruf besar, satu huruf) - atau di browser, buka
-DevTools -> tab Network -> klik request-nya -> lihat bagian Headers.
-Ingat juga: environment ini cuma bisa diakses dengan cara yang sama
-seperti waktu kamu buka Flag 6.
+`curl -I`, atau DevTools tab Network > Headers.
 
 </details>
 
