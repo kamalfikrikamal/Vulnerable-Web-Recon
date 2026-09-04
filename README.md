@@ -61,8 +61,10 @@ docker compose down -v
 
 ## Panduan 4 Fase Recon
 
-Ini **bukan jawaban** - hanya arah dan contoh perintah. Detail temuan harus
-digali sendiri oleh peserta dan ditulis di `LAPORAN_TEMPLATE.md`.
+Ini **bukan jawaban** - hanya arah dan contoh perintah. Untuk daftar tugas
+konkret (apa saja yang harus ditemukan dan dijawab per fase), pakai
+**`SOAL.md`**. Detail temuan harus digali sendiri oleh peserta dan ditulis
+di `LAPORAN_TEMPLATE.md`.
 
 ### 1. Passive Recon
 
@@ -138,6 +140,7 @@ docker-compose.yml
 web/            # nginx: situs utama, vhost, panel internal, sertifikat TLS
 ftp/            # vsftpd anonymous
 dns/            # BIND9 zone corplab.local
+SOAL.md               # daftar tugas konkret per fase - mulai dari sini
 LAPORAN_TEMPLATE.md   # template laporan untuk peserta
 instructor/ANSWER_KEY.md   # kunci jawaban lengkap (untuk instruktur)
 ```
