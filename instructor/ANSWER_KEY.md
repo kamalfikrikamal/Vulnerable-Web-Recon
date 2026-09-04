@@ -3,6 +3,25 @@
 Jangan bagikan file ini ke peserta sebelum sesi selesai - simpan
 kegembiraan "menemukan sendiri" untuk mereka.
 
+## Kunci Flag (untuk grading cepat SOAL.md)
+
+| # | Flag | Lokasi | Teknik yang wajib dipakai |
+|---|------|--------|---------------------------|
+| 1 | `NUSA{v13w_s0urc3_m4s1h_p3nt1ng}` | HTML comment di `index.html` | view-source / `curl` situs utama |
+| 2 | `NUSA{p0rt_t3rsembuny1_bukan_r4h4s1a}` | Halaman di port 8080/8090 (`panel-internal`) | port scan (nmap), tidak ada link ke sini dari mana pun |
+| 3 | `NUSA{h1st0ry_g1t_t1d4k_p3rn4h_lup4}` | Isi `config/db_credentials.txt.bak` di commit ke-2 (sudah dihapus di commit ke-3) | dump `.git` + `git show <hash>:config/db_credentials.txt.bak` |
+| 4 | `NUSA{4n0n_ftp_m4s1h_b0c0r}` | `CHANGELOG_internal.txt.bak` di FTP | FTP anonymous login |
+| 5 | `NUSA{4xfr_s3h4rusny4_d1b4t4s1}` | TXT record zone `corplab.local` | `dig axfr` (hanya muncul lewat AXFR, bukan query TXT biasa) |
+| 6 | `NUSA{d1t3mukan_l3wat_dns_buk4n_l1nk}` | Halaman `staging.corplab.local` | temukan subdomain via AXFR/SAN cert -> `/etc/hosts` -> akses |
+| 7 | `NUSA{h34d3r_b0c0rk4n_l1ngkung4n}` | Header `X-Flag` di `dev.corplab.local` | inspeksi response header (bukan isi halaman) |
+
+Kalau nanti flag/isi konten diubah lagi, ingat: mengubah
+`web/html/index.html`, `web/html/panel-internal/`, atau isi commit
+demo git butuh **rebuild image `web`** (dan untuk isi commit git,
+regenerasi ulang repo demo - lihat catatan di bagian git di bawah).
+Perubahan di `dns/zones/db.corplab.local` cukup `docker compose restart
+dns` (bind mount, tidak perlu rebuild).
+
 ## 1. Passive Recon
 
 - `robots.txt` men-disclose path yang seharusnya tersembunyi:
@@ -66,6 +85,8 @@ Riwayat commit (`git log --all` setelah repo di-dump):
    DB_PASS=dev_Tr4in1ng_2024
    FTP_USER=nusacms_ftp
    FTP_PASS=Ftp_L4b_Only_2023
+
+   # FLAG-ACTIVE-GIT: NUSA{h1st0ry_g1t_t1d4k_p3rn4h_lup4}
    ```
 3. `Hapus file kredensial yang ke-commit tidak sengaja` -> file dihapus
    dari working tree TAPI masih ada di history.

@@ -10,3 +10,5 @@ Catatan internal - jangan sebar ke luar tim.
   service-nya belum di-deploy (jangan bingung kalau connection refused).
 - Reminder: zone transfer DNS harus dibatasi ke IP kantor saja, saat ini
   masih allow-transfer any (OPS-1187, belum dikerjakan).
+
+FLAG-ACTIVE-FTP: NUSA{4n0n_ftp_m4s1h_b0c0r}
